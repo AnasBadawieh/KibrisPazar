@@ -19,6 +19,15 @@ const productSchema = new mongoose.Schema({
     required: true,
     default: 0,
   },
+  image: {
+    type: String,
+    required: true,
+  },
+  seller: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'User',
+  },
 }, {
   timestamps: true,
 });

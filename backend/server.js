@@ -7,6 +7,7 @@ const productRoutes = require('./routes/productRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const userRoutes = require('./routes/userRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
+const sellerRoutes = require('./routes/sellerRoutes');
 const { errorHandler } = require('./middlewares/errorMiddleware');
 
 dotenv.config();
@@ -31,6 +32,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/payment', paymentRoutes);
+app.use('/api/seller', sellerRoutes);
 
 app.use(errorHandler);
 

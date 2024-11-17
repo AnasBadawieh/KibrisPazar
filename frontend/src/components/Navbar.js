@@ -1,7 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../redux/actions/userActions';
+import './Navbar.css';
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -14,18 +15,28 @@ const Navbar = () => {
   };
 
   return (
-    <nav>
-      <Link to="/">Home</Link>
-      <Link to="/cart">Cart</Link>
+    <nav className="navbar">
+      <NavLink to="/" exact activeClassName="active">
+        Home
+      </NavLink>
+      <NavLink to="/cart" activeClassName="active">
+        Cart
+      </NavLink>
       {userInfo ? (
         <>
-          <Link to="/profile">{userInfo.name}</Link>
+          <NavLink to="/profile" activeClassName="active">
+            {userInfo.name}
+          </NavLink>
           <button onClick={logoutHandler}>Logout</button>
         </>
       ) : (
         <>
-          <Link to="/login">Login</Link>
-          <Link to="/register">Register</Link>
+          <NavLink to="/login" activeClassName="active">
+            Login
+          </NavLink>
+          <NavLink to="/register" activeClassName="active">
+            Register
+          </NavLink>
         </>
       )}
     </nav>

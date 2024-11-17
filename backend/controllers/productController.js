@@ -13,20 +13,21 @@ const getProductById = async (req, res) => {
   if (product) {
     res.json(product);
   } else {
-    res.status(404);
-    throw new Error('Product not found');
+    res.status(404).json({ message: 'Product not found' });
   }
 };
 
 // Create new product
 const createProduct = async (req, res) => {
-  const { name, description, price, countInStock } = req.body;
+  const { name, description, price, countInStock, image } = req.body;
 
   const product = new Product({
     name,
     description,
     price,
     countInStock,
+    image,
+    seller: req.user._id,
   });
 
   const createdProduct = await product.save();

@@ -1,0 +1,47 @@
+.seller-dashboard-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 0.25rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.seller-dashboard-container h1 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.seller-dashboard-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.seller-dashboard-container form div {
+  margin-bottom: 1rem;
+}
+
+.seller-dashboard-container form label {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.seller-dashboard-container form input,
+.seller-dashboard-container form textarea {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+}
+
+.seller-dashboard-container form button {
+  padding: 0.75rem;
+  background-color: #28a745;
+  color: #ffffff;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.seller-dashboard-container form button:hover {
+  background-color: #218838;
+}

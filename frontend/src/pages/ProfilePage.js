@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserDetails, updateUserProfile } from '../redux/actions/userActions';
 import { USER_UPDATE_PROFILE_RESET } from '../redux/constants/userConstants';
+import Navbar from '../components/Navbar';
+import './ProfilePage.css';
 
 const ProfilePage = ({ history }) => {
   const [name, setName] = useState('');
@@ -46,49 +48,51 @@ const ProfilePage = ({ history }) => {
 
   return (
     <div>
-      <h1>User Profile</h1>
-      {message && <div>{message}</div>}
-      {error && <div>{error}</div>}
-      {loading && <div>Loading...</div>}
-      <form onSubmit={submitHandler}>
-        <div>
-          <label>Name</label>
-          <input
-            type="text"
-            placeholder="Enter name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Email Address</label>
-          <input
-            type="email"
-            placeholder="Enter email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Password</label>
-          <input
-            type="password"
-            placeholder="Enter password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Confirm Password</label>
-          <input
-            type="password"
-            placeholder="Confirm password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-        </div>
-        <button type="submit">Update</button>
-      </form>
+      <div className="profile-container">
+        <h1>User Profile</h1>
+        {message && <div>{message}</div>}
+        {error && <div>{error}</div>}
+        {loading && <div>Loading...</div>}
+        <form onSubmit={submitHandler}>
+          <div>
+            <label>Name</label>
+            <input
+              type="text"
+              placeholder="Enter name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>Email Address</label>
+            <input
+              type="email"
+              placeholder="Enter email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>Password</label>
+            <input
+              type="password"
+              placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>Confirm Password</label>
+            <input
+              type="password"
+              placeholder="Confirm password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          </div>
+          <button type="submit">Update</button>
+        </form>
+      </div>
     </div>
   );
 };

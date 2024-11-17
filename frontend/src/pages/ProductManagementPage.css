@@ -1,0 +1,99 @@
+.product-management-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 0.25rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.product-management-container h1 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.product-form {
+  margin-bottom: 2rem;
+}
+
+.product-form h2 {
+  margin-bottom: 1rem;
+}
+
+.product-form form {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-form form div {
+  margin-bottom: 1rem;
+}
+
+.product-form form label {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.product-form form input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+}
+
+.product-form form button {
+  padding: 0.75rem;
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.product-form form button:hover {
+  background-color: #0056b3;
+}
+
+.product-list {
+  margin-top: 2rem;
+}
+
+.product-list h2 {
+  margin-bottom: 1rem;
+}
+
+.product-item {
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+.product-item h3 {
+  margin: 0;
+}
+
+.product-item p {
+  margin: 0.5rem 0;
+}
+
+.product-item button {
+  padding: 0.5rem 1rem;
+  background-color: #28a745;
+  color: #ffffff;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+
+.product-item button:hover {
+  background-color: #218838;
+}
+
+.product-item button:last-child {
+  background-color: #dc3545;
+}
+
+.product-item button:last-child:hover {
+  background-color: #c82333;
+}
