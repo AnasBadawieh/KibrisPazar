@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { listProductDetails } from '../redux/actions/productActions';
-import { addToCart } from '../redux/actions/cartActions';
-import Loader from '../components/Loader';
-import Message from '../components/Message';
 
-const ProductPage = ({ match, history }) => {
-  const [qty, setQty] = useState(1);
+const ProductPage = ({ match }) => {
   const dispatch = useDispatch();
 
   const productDetails = useSelector((state) => state.productDetails);
@@ -16,48 +14,46 @@ const ProductPage = ({ match, history }) => {
     dispatch(listProductDetails(match.params.id));
   }, [dispatch, match]);
 
-  const addToCartHandler = () => {
-    dispatch(addToCart(product._id, qty));
-    history.push('/cart');
-  };
-
   return (
-    <div>
+    <>
+      <Link className="btn btn-light my-3" to="/">
+        Go Back
+      </Link>
       {loading ? (
-        <Loader />
+        <h2>Loading...</h2>
       ) : error ? (
-        <Message variant="error">{error}</Message>
+        <h3>{error}</h3>
       ) : (
-        <div>
-          <h1>{product.name}</h1>
-          <p>{product.description}</p>
-          <p>${product.price}</p>
-          <div>
-            <label>Quantity</label>
-            <select value={qty} onChange={(e) => setQty(Number(e.target.value))}>
-              {[...Array(product.countInStock).keys()].map((x) => (
-                <option key={x + 1} value={x + 1}>
-                  {x + 1}
-                </option>
-              ))}
-            </select>
-          </div>
-          <button onClick={addToCartHandler}>Add to Cart</button>
-          <h2>Reviews</h2>
-          {product.reviews.length === 0 ? (
-            <Message variant="info">No Reviews</Message>
-          ) : (
-            product.reviews.map((review) => (
-              <div key={review._id}>
-                <strong>{review.name}</strong>
-                <p>{review.rating} stars</p>
-                <p>{review.comment}</p>
-              </div>
-            ))
-          )}
-        </div>
+        <Row>
+          <Col md={6}>
+            <Image src={product.image} alt={product.name} fluid />
+          </Col>
+          <Col md={3}>
+            <ListGroup variant="flush">
+              <ListGroup.Item>
+                <h3>{product.name}</h3>
+              </ListGroup.Item>
+              <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
+              <ListGroup.Item>Description: {product.description}</ListGroup.Item>
+              <ListGroup.Item>Seller: {product.seller.name}</ListGroup.Item>
+              <ListGroup.Item>Seller Rating: {product.seller.rating}</ListGroup.Item>
+              <ListGroup.Item>Product Rating: {product.rating}</ListGroup.Item>
+            </ListGroup>
+          </Col>
+          <Col md={3}>
+            <Card>
+              <ListGroup variant="flush">
+                <ListGroup.Item>
+                  <Button className="btn-block" type="button">
+                    Add to Cart
+                  </Button>
+                </ListGroup.Item>
+              </ListGroup>
+            </Card>
+          </Col>
+        </Row>
       )}
-    </div>
+    </>
   );
 };
 

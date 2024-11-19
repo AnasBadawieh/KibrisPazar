@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -13,28 +13,29 @@ import PaymentPage from './pages/PaymentPage';
 import ShippingPage from './pages/ShippingPage';
 import PaymentMethodPage from './pages/PaymentMethodPage';
 import SellerDashboardPage from './pages/SellerDashboardPage';
-import Navbar from './components/Navbar';
+import Header from './components/Navbar';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
   return (
-    <div>
-      <Navbar />
-      <Switch>
-        <Route path="/" component={HomePage} exact />
-        <Route path="/login" component={LoginPage} />
-        <Route path="/register" component={RegisterPage} />
-        <Route path="/product/:id" component={ProductPage} />
-        <Route path="/cart/:id?" component={CartPage} />
-        <Route path="/profile" component={ProfilePage} />
-        <Route path="/products" component={ProductListPage} />
-        <Route path="/order/:id" component={OrderPage} />
-        <Route path="/orderhistory" component={OrderHistoryPage} />
-        <Route path="/payment" component={PaymentPage} />
-        <Route path="/shipping" component={ShippingPage} />
-        <Route path="/paymentmethod" component={PaymentMethodPage} />
-        <Route path="/seller/dashboard" component={SellerDashboardPage} />
-      </Switch>
-    </div>
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" element={<HomePage />} exact />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/product/:id" element={<ProductPage />} />
+        <Route path="/cart/:id?" element={<CartPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/products" element={<ProductListPage />} />
+        <Route path="/order/:id" element={<OrderPage />} />
+        <Route path="/orderhistory" element={<OrderHistoryPage />} />
+        <Route path="/payment" element={<PaymentPage />} />
+        <Route path="/shipping" element={<ShippingPage />} />
+        <Route path="/paymentmethod" element={<PaymentMethodPage />} />
+        <Route path="/seller/dashboard" element={<SellerDashboardPage />} />
+      </Routes>
+    </>
   );
 };
 

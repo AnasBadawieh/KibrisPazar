@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate, useParams, useLocation } from 'react-router-dom';
 import { addToCart, removeFromCart } from '../redux/actions/cartActions';
-import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import './CartPage.css';
 
-const CartPage = ({ match, location, history }) => {
-  const productId = match.params.id;
-  const qty = location.search ? Number(location.search.split('=')[1]) : 1;
+const CartPage = () => {
+  const { id: productId } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const qty = location.search ? Number(new URLSearchParams(location.search).get('qty')) : 1;
 
   const dispatch = useDispatch();
 
@@ -25,7 +27,7 @@ const CartPage = ({ match, location, history }) => {
   };
 
   const checkoutHandler = () => {
-    history.push('/login?redirect=shipping');
+    navigate('/login?redirect=shipping');
   };
 
   return (
@@ -39,41 +41,13 @@ const CartPage = ({ match, location, history }) => {
         ) : (
           <div>
             {cartItems.map((item) => (
-              <div key={item.product} className="cart-item">
-                <img src={item.image} alt={item.name} />
-                <div className="cart-item-details">
-                  <Link to={`/product/${item.product}`}>
-                    <h3>{item.name}</h3>
-                  </Link>
-                  <p>${item.price}</p>
-                </div>
-                <div className="cart-item-actions">
-                  <select
-                    value={item.qty}
-                    onChange={(e) => dispatch(addToCart(item.product, Number(e.target.value)))}
-                  >
-                    {[...Array(item.countInStock).keys()].map((x) => (
-                      <option key={x + 1} value={x + 1}>
-                        {x + 1}
-                      </option>
-                    ))}
-                  </select>
-                  <button onClick={() => removeFromCartHandler(item.product)}>Remove</button>
-                </div>
+              <div key={item.product}>
+                <Link to={`/product/${item.product}`}>{item.name}</Link>
+                <span>{item.qty}</span>
+                <button onClick={() => removeFromCartHandler(item.product)}>Remove</button>
               </div>
             ))}
-            <div className="cart-summary">
-              <h2>
-                Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)}) items
-              </h2>
-              <p>
-                Total: $
-                {cartItems
-                  .reduce((acc, item) => acc + item.qty * item.price, 0)
-                  .toFixed(2)}
-              </p>
-              <button onClick={checkoutHandler}>Proceed to Checkout</button>
-            </div>
+            <button onClick={checkoutHandler}>Proceed To Checkout</button>
           </div>
         )}
       </div>

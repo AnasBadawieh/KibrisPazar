@@ -1,15 +1,14 @@
 .login-container {
   max-width: 400px;
-  margin: 0 auto;
-  padding: 2rem;
-  background-color: #ffffff;
-  border-radius: 0.25rem;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
 }
 
 .login-container h1 {
   text-align: center;
-  margin-bottom: 1rem;
 }
 
 .login-container form {
@@ -18,26 +17,25 @@
 }
 
 .login-container form div {
-  margin-bottom: 1rem;
+  margin-bottom: 10px;
 }
 
 .login-container form label {
-  margin-bottom: 0.5rem;
-  font-weight: bold;
+  margin-bottom: 5px;
 }
 
 .login-container form input {
-  padding: 0.5rem;
+  padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 0.25rem;
+  border-radius: 5px;
 }
 
 .login-container form button {
-  padding: 0.75rem;
+  padding: 10px;
   background-color: #007bff;
-  color: #ffffff;
+  color: white;
   border: none;
-  border-radius: 0.25rem;
+  border-radius: 5px;
   cursor: pointer;
 }
 

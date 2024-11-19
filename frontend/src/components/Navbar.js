@@ -1,10 +1,10 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { LinkContainer } from 'react-router-bootstrap';
+import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/actions/userActions';
-import './Navbar.css';
 
-const Navbar = () => {
+const Header = () => {
   const dispatch = useDispatch();
 
   const userLogin = useSelector((state) => state.userLogin);
@@ -15,32 +15,57 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="navbar">
-      <NavLink to="/" exact activeClassName="active">
-        Home
-      </NavLink>
-      <NavLink to="/cart" activeClassName="active">
-        Cart
-      </NavLink>
-      {userInfo ? (
-        <>
-          <NavLink to="/profile" activeClassName="active">
-            {userInfo.name}
-          </NavLink>
-          <button onClick={logoutHandler}>Logout</button>
-        </>
-      ) : (
-        <>
-          <NavLink to="/login" activeClassName="active">
-            Login
-          </NavLink>
-          <NavLink to="/register" activeClassName="active">
-            Register
-          </NavLink>
-        </>
-      )}
-    </nav>
+    <header>
+      <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
+        <Container>
+          <LinkContainer to="/">
+            <Navbar.Brand>MyShop</Navbar.Brand>
+          </LinkContainer>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="ml-auto">
+              <LinkContainer to="/cart">
+                <Nav.Link>
+                  <i className="fas fa-shopping-cart"></i> Cart
+                </Nav.Link>
+              </LinkContainer>
+              {userInfo ? (
+                <NavDropdown title={userInfo.name} id="username">
+                  <LinkContainer to="/profile">
+                    <NavDropdown.Item>Profile</NavDropdown.Item>
+                  </LinkContainer>
+                  {userInfo.isSeller && (
+                    <LinkContainer to="/seller/dashboard">
+                      <NavDropdown.Item>Seller Dashboard</NavDropdown.Item>
+                    </LinkContainer>
+                  )}
+                  {userInfo.isAdmin && (
+                    <LinkContainer to="/admin/dashboard">
+                      <NavDropdown.Item>Admin Dashboard</NavDropdown.Item>
+                    </LinkContainer>
+                  )}
+                  <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
+                </NavDropdown>
+              ) : (
+                <>
+                  <LinkContainer to="/login">
+                    <Nav.Link>
+                      <i className="fas fa-user"></i> Sign In
+                    </Nav.Link>
+                  </LinkContainer>
+                  <LinkContainer to="/register">
+                    <Nav.Link>
+                      <i className="fas fa-user"></i> Register
+                    </Nav.Link>
+                  </LinkContainer>
+                </>
+              )}
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+    </header>
   );
 };
 
-export default Navbar;
+export default Header;

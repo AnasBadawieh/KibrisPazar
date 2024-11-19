@@ -18,6 +18,7 @@ import API_BASE_URL from '../../config';
 
 export const login = (email, password) => async (dispatch) => {
   try {
+    
     dispatch({ type: USER_LOGIN_REQUEST });
 
     const config = {
