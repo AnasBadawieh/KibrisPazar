@@ -48,7 +48,7 @@ export const listProductDetails = (id) => async (dispatch) => {
   }
 };
 
-export const createProduct = (product) => async (dispatch, getState) => {
+export const createProduct = (productData, imageFile) => async (dispatch, getState) => {
   try {
     dispatch({ type: PRODUCT_CREATE_REQUEST });
 
@@ -61,9 +61,23 @@ export const createProduct = (product) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.post(`${API_BASE_URL}/api/products`, product, config);
+    // Create product
+    const { data: createdProduct } = await axios.post(`${API_BASE_URL}/api/products`, productData, config);
 
-    dispatch({ type: PRODUCT_CREATE_SUCCESS, payload: data });
+    // Upload image if product creation is successful
+    if (imageFile) {
+      const formData = new FormData();
+      formData.append('image', imageFile);
+      const imageConfig = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+      await axios.post(`${API_BASE_URL}/api/upload/${createdProduct._id}`, formData, imageConfig);
+    }
+
+    dispatch({ type: PRODUCT_CREATE_SUCCESS, payload: createdProduct });
   } catch (error) {
     dispatch({
       type: PRODUCT_CREATE_FAIL,

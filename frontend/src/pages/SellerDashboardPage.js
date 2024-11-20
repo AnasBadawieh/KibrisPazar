@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { Button, Image, Row, Col, Spinner } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,6 +16,7 @@ const SellerDashboardPage = () => {
   const [uploading, setUploading] = useState(false);
   const [previews, setPreviews] = useState([]);
   const [previewImages, setPreviewImages] = useState([]);
+  const fileInputRef = useRef(null);
 
   const dispatch = useDispatch();
   const productCreate = useSelector((state) => state.productCreate || {});
@@ -24,24 +25,18 @@ const SellerDashboardPage = () => {
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    setImages(files);
+    setImages(prevImages => [...prevImages, ...files]);
 
     const previewFiles = files.map(file => URL.createObjectURL(file));
-    setPreviewImages(previewFiles);
+    setPreviewImages(prevPreviewImages => [...prevPreviewImages, ...previewFiles]);
+
+    // Reset the input field value
+    e.target.value = null;
   };
 
-  const handleImageDelete = async (index) => {
-    const imageToDelete = images[index];
-    const filename = imageToDelete.name;
-    
-
-    try {
-      await axios.delete(`${BASE_URL}/api/upload/${filename}`);
-      setImages(images.filter((_, i) => i !== index));
-      setPreviewImages(previewImages.filter((_, i) => i !== index));
-    } catch (error) {
-      console.error('Failed to delete image', error);
-    }
+  const handleImageDelete = (index) => {
+    setImages(images.filter((_, i) => i !== index));
+    setPreviewImages(previewImages.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (e) => {
@@ -115,6 +110,7 @@ const SellerDashboardPage = () => {
             multiple
             accept="image/*"
             className="form-control"
+            ref={fileInputRef}
           />
           {uploading && <Spinner animation="border" />}
         </div>
