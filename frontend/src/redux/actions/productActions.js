@@ -61,10 +61,8 @@ export const createProduct = (productData, imageFile) => async (dispatch, getSta
       },
     };
 
-    // Create product
     const { data: createdProduct } = await axios.post(`${API_BASE_URL}/api/products`, productData, config);
 
-    // Upload image if product creation is successful
     if (imageFile) {
       const formData = new FormData();
       formData.append('image', imageFile);

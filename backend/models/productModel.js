@@ -3,31 +3,31 @@ const mongoose = require('mongoose');
 const productSchema = mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   price: {
     type: Number,
-    required: true
+    required: true,
   },
   description: {
     type: String,
-    required: true
+    required: true,
   },
   images: [{
     type: String,
-    required: true
+    required: true,
   }],
   countInStock: {
     type: Number,
-    required: true
+    required: true,
   },
   seller: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
-  }
+    required: true,
+  },
 }, {
-  timestamps: true
+  timestamps: true,
 });
 
 const Product = mongoose.model('Product', productSchema);

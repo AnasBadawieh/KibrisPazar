@@ -26,24 +26,24 @@ const getProductById = asyncHandler(async (req, res) => {
 // @route   POST /api/products
 // @access  Private/Admin
 const createProduct = asyncHandler(async (req, res) => {
-  const { name, price, description, image, countInStock, seller } = req.body;
+  try {
+    const { name, price, description, image, countInStock } = req.body;
 
-  if (!seller) {
-    res.status(400);
-    throw new Error('Seller is required');
+    const product = new Product({
+      seller: req.user._id, // Set the seller field
+      name,
+      price,
+      description,
+      image,
+      countInStock,
+    });
+
+    const createdProduct = await product.save();
+    res.status(201).json(createdProduct);
+  } catch (error) {
+    console.error('Error creating product:', error);
+    res.status(500).json({ message: 'Server error' });
   }
-
-  const product = new Product({
-    name,
-    price,
-    description,
-    image,
-    countInStock,
-    seller,
-  });
-
-  const createdProduct = await product.save();
-  res.status(201).json(createdProduct);
 });
 
 module.exports = {
