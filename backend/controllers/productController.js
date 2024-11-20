@@ -1,10 +1,11 @@
+const asyncHandler = require('express-async-handler');
 const Product = require('../models/productModel');
 
 // Get all products
-const getProducts = async (req, res) => {
+const getProducts = asyncHandler(async (req, res) => {
   const products = await Product.find({});
   res.json(products);
-};
+});
 
 // Get single product by ID
 const getProductById = async (req, res) => {
@@ -17,21 +18,33 @@ const getProductById = async (req, res) => {
   }
 };
 
-// Create new product
-const createProduct = async (req, res) => {
-  const { name, description, price, countInStock, image } = req.body;
+// @desc    Create a product
+// @route   POST /api/products
+// @access  Private
+const createProduct = asyncHandler(async (req, res) => {
+  const { name, price, description, countInStock, images } = req.body;
+  
+  // Validate images array
+  if (!images || images.length === 0) {
+    res.status(400);
+    throw new Error('At least one product image is required');
+  }
 
-  const product = new Product({
+  const product = await Product.create({
     name,
-    description,
     price,
+    description,
     countInStock,
-    image,
-    seller: req.user._id,
+    images, // Save array of image URLs
+    seller: req.user._id // Assuming you have auth middleware
   });
 
-  const createdProduct = await product.save();
-  res.status(201).json(createdProduct);
-};
+  if (product) {
+    res.status(201).json(product);
+  } else {
+    res.status(400);
+    throw new Error('Invalid product data');
+  }
+});
 
 module.exports = { getProducts, getProductById, createProduct };

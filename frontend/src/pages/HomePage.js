@@ -42,4 +42,22 @@ const HomePage = () => {
   );
 };
 
+const ProductCard = ({ product }) => {
+  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+  
+  return (
+    <div className="product-card">
+      <img 
+        src={`${apiBaseUrl}${product.images[0]}`} // Prepend API base URL
+        alt={product.name}
+        onError={(e) => {
+          e.target.onerror = null;
+          e.target.src = '/placeholder.png';
+        }}
+      />
+      {/* Rest of product card content */}
+    </div>
+  );
+};
+
 export default HomePage;

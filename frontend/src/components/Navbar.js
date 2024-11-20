@@ -10,8 +10,43 @@ const Header = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
+  console.log('Full userInfo:', userInfo); // Add this debug line
+
   const logoutHandler = () => {
     dispatch(logout());
+  };
+
+  const renderDashboardLink = () => {
+    // Add debug logging
+    console.log('userInfo:', userInfo);
+    console.log('role:', userInfo?.role);
+
+    if (!userInfo || !userInfo.role) {
+      console.log('No user info or role found');
+      console.log(JSON.parse(localStorage.getItem('userInfo')));
+      return null;
+    }
+    
+    // Use lowercase comparison for safety
+    const role = userInfo.role.toLowerCase();
+    
+    switch (role) {
+      case 'seller':
+        return (
+          <LinkContainer to="/seller/dashboard">
+            <NavDropdown.Item>Seller Dashboard</NavDropdown.Item>
+          </LinkContainer>
+        );
+      case 'admin':
+        return (
+          <LinkContainer to="/admin/dashboard">
+            <NavDropdown.Item>Admin Dashboard</NavDropdown.Item>
+          </LinkContainer>
+        );
+      default:
+        console.log('Unknown role:', role);
+        return null;
+    }
   };
 
   return (
@@ -34,16 +69,7 @@ const Header = () => {
                   <LinkContainer to="/profile">
                     <NavDropdown.Item>Profile</NavDropdown.Item>
                   </LinkContainer>
-                  {userInfo.isSeller && (
-                    <LinkContainer to="/seller/dashboard">
-                      <NavDropdown.Item>Seller Dashboard</NavDropdown.Item>
-                    </LinkContainer>
-                  )}
-                  {userInfo.isAdmin && (
-                    <LinkContainer to="/admin/dashboard">
-                      <NavDropdown.Item>Admin Dashboard</NavDropdown.Item>
-                    </LinkContainer>
-                  )}
+                  {renderDashboardLink()}
                   <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
                 </NavDropdown>
               ) : (

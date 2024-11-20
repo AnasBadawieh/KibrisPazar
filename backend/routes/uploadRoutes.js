@@ -1,6 +1,8 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
+const { deleteImage } = require('../controllers/uploadController');
+
 const router = express.Router();
 
 const storage = multer.diskStorage({
@@ -31,8 +33,10 @@ const upload = multer({
   },
 });
 
-router.post('/', upload.single('image'), (req, res) => {
-  res.send(`/${req.file.path}`);
+router.post('/', upload.array('images', 10), (req, res) => {
+  res.send(req.files.map(file => `/uploads/${file.filename}`));
 });
+
+router.delete('/:filename', deleteImage);
 
 module.exports = router;
