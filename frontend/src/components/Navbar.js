@@ -17,13 +17,7 @@ const Header = () => {
   };
 
   const renderDashboardLink = () => {
-    // Add debug logging
-    console.log('userInfo:', userInfo);
-    console.log('role:', userInfo?.role);
-
     if (!userInfo || !userInfo.role) {
-      console.log('No user info or role found');
-      console.log(JSON.parse(localStorage.getItem('userInfo')));
       return null;
     }
     

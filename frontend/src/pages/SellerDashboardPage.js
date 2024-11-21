@@ -50,7 +50,6 @@ const SellerDashboardPage = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log('Uploaded images:', data);
 
       if (data.length === 0) {
         alert('Failed to upload images');

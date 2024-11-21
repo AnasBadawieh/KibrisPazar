@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { listProducts } from '../redux/actions/productActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
-import ProductCard from '../components/ProductCard'; // Ensure this import is present
+import ProductCard from '../components/ProductCard';
 
 const HomePage = () => {
   const dispatch = useDispatch();

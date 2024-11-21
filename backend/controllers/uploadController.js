@@ -5,7 +5,7 @@ const Product = require('../models/productModel');
 
 const deleteImage = (req, res) => {
   const filename = req.params.filename;
-  const filePath = path.join(__dirname, '../uploads', filename);
+  const filePath = path.join(__dirname, '../../uploads', filename);// deleteIMAGE.......
 
   fs.unlink(filePath, (err) => {
     if (err) {
@@ -28,10 +28,10 @@ const uploadImage = asyncHandler(async (req, res) => {
   }
 
   if (req.file) {
-    const imagePath = `/uploads/${req.file.filename}`;
+    const imagePath = `${req.file.filename}`;
     product.image = imagePath;
     await product.save();
-    res.status(200).json({ message: 'Image uploaded successfully', image: imagePath });
+    res.status(200).json({ message: 'Image uploaded successfully' });
   } else {
     res.status(400);
     throw new Error('No image file uploaded');
