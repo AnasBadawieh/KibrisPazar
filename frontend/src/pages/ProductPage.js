@@ -35,9 +35,6 @@ const ProductPage = ({ match }) => {
               </ListGroup.Item>
               <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
               <ListGroup.Item>Description: {product.description}</ListGroup.Item>
-              <ListGroup.Item>Seller: {product.seller.name}</ListGroup.Item>
-              <ListGroup.Item>Seller Rating: {product.seller.rating}</ListGroup.Item>
-              <ListGroup.Item>Product Rating: {product.rating}</ListGroup.Item>
             </ListGroup>
           </Col>
           <Col md={3}>

@@ -2,6 +2,8 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const { deleteImage } = require('../controllers/uploadController');
+const { createProduct } = require('../controllers/productController');
+const { protect } = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
@@ -38,5 +40,6 @@ router.post('/', upload.array('images', 10), (req, res) => {
 });
 
 router.delete('/:filename', deleteImage);
+router.route('/').post(protect, createProduct);
 
 module.exports = router;

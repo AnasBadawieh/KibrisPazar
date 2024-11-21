@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { listProducts } from '../redux/actions/productActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
-//import './HomePage.css';
+import ProductCard from '../components/ProductCard'; // Ensure this import is present
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -17,45 +17,20 @@ const HomePage = () => {
 
   return (
     <div className="container">
-      <h1>Deep Web Market</h1>
-      <h2>Products</h2>
+      <h1>Products</h1>
       {loading ? (
         <Loader />
       ) : error ? (
-        <Message variant="error">{error}</Message>
+        <Message variant="danger">{error}</Message>
       ) : (
-        <div>
-          {products.length === 0 ? (
-            <Message variant="info">No Product For Sale YET!!</Message>
-          ) : (
-            products.map((product) => (
-              <div key={product._id} className="product">
-                <h3>{product.name}</h3>
-                <p>{product.description}</p>
-                <p>${product.price}</p>
-              </div>
-            ))
-          )}
+        <div className="row">
+          {products.map((product) => (
+            <div key={product._id} className="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+              <ProductCard product={product} />
+            </div>
+          ))}
         </div>
       )}
-    </div>
-  );
-};
-
-const ProductCard = ({ product }) => {
-  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
-  
-  return (
-    <div className="product-card">
-      <img 
-        src={`${apiBaseUrl}${product.images[0]}`} // Prepend API base URL
-        alt={product.name}
-        onError={(e) => {
-          e.target.onerror = null;
-          e.target.src = '/placeholder.png';
-        }}
-      />
-      {/* Rest of product card content */}
     </div>
   );
 };

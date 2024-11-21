@@ -45,28 +45,28 @@ const SellerDashboardPage = () => {
     images.forEach(image => formData.append('images', image));
 
     try {
-      const { data } = await axios.post(`${BASE_URL}/api/upload`, formData, {
+      var { data } = await axios.post(`${BASE_URL}/api/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
       console.log('Uploaded images:', data);
+
+      if (data.length === 0) {
+        alert('Failed to upload images');
+        return;
+      }
+
+      dispatch(createProduct({
+        name,
+        price,
+        description,
+        countInStock,
+        images: data // Use the directories returned from the upload API
+      }));
     } catch (error) {
       console.error('Failed to upload images', error);
     }
-
-    if (images.length === 0) {
-      alert('Please upload at least one image');
-      return;
-    }
-
-    dispatch(createProduct({
-      name,
-      price,
-      description,
-      countInStock,
-      images
-    }));
   };
 
   return (
