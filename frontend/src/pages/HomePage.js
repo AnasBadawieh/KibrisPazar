@@ -14,15 +14,18 @@ const HomePage = () => {
   useEffect(() => {
     dispatch(listProducts());
   }, [dispatch]);
-
   return (
     <div className="container">
       <h1>Products</h1>
       {loading ? (
         <Loader />
+
       ) : error ? (
+
         <Message variant="danger">{error}</Message>
       ) : (
+        products.length === 0 && <Message variant="info">No products available currently</Message>)}
+      {products && (
         <div className="row">
           {products.map((product) => (
             <div key={product._id} className="col-sm-12 col-md-6 col-lg-4 col-xl-3">

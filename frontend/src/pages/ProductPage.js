@@ -1,18 +1,22 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { listProductDetails } from '../redux/actions/productActions';
 
-const ProductPage = ({ match }) => {
+const ProductPage = () => {
+  const { id } = useParams();
   const dispatch = useDispatch();
-
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
 
   useEffect(() => {
-    dispatch(listProductDetails(match.params.id));
-  }, [dispatch, match]);
+    dispatch(listProductDetails(id));
+  }, [dispatch, id]);
+
+  const imageUrl = product && product.images && product.images.length > 0 
+    ? `${process.env.REACT_APP_API_BASE_URL}${product.images[0]}` 
+    : '';
 
   return (
     <>
@@ -26,7 +30,7 @@ const ProductPage = ({ match }) => {
       ) : (
         <Row>
           <Col md={6}>
-            <Image src={product.image} alt={product.name} fluid />
+            <Image src={imageUrl} alt={product.name} fluid />
           </Col>
           <Col md={3}>
             <ListGroup variant="flush">
