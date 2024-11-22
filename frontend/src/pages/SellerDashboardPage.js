@@ -14,13 +14,13 @@ const SellerDashboardPage = () => {
   const [images, setImages] = useState([]);
   const [description, setDescription] = useState('');
   const [uploading, setUploading] = useState(false);
-  const [previews, setPreviews] = useState([]);
   const [previewImages, setPreviewImages] = useState([]);
   const fileInputRef = useRef(null);
 
   const dispatch = useDispatch();
   const productCreate = useSelector((state) => state.productCreate || {});
   const { loading, success, error } = productCreate;
+
   const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:5000';
 
   const handleImageChange = (e) => {
@@ -41,11 +41,13 @@ const SellerDashboardPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setUploading(true);
+
     const formData = new FormData();
     images.forEach(image => formData.append('images', image));
 
     try {
-      var { data } = await axios.post(`${BASE_URL}/api/upload`, formData, {
+      const { data } = await axios.post(`${BASE_URL}/api/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -53,6 +55,7 @@ const SellerDashboardPage = () => {
 
       if (data.length === 0) {
         alert('Failed to upload images');
+        setUploading(false);
         return;
       }
 
@@ -63,8 +66,11 @@ const SellerDashboardPage = () => {
         countInStock,
         images: data // Use the directories returned from the upload API
       }));
+
+      setUploading(false);
     } catch (error) {
       console.error('Failed to upload images', error);
+      setUploading(false);
     }
   };
 

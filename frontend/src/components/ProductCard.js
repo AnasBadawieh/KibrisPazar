@@ -4,7 +4,6 @@ import { Card } from 'react-bootstrap';
 
 const ProductCard = ({ product }) => {
   const imageUrl = `${process.env.REACT_APP_API_BASE_URL}${product.images[0]}`;
-  console.log('Image URL:', imageUrl); // Log the image URL
 
   return (
     <Card className="my-3 p-3 rounded">
