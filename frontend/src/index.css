@@ -59,3 +59,20 @@ h1, h2 {
 .product p {
   margin: 0.5rem 0;
 }
+
+.product-card {
+  margin: 1rem;
+}
+
+.product-card img {
+  width: 100%;
+  height: auto;
+}
+
+.product-card h3 {
+  margin-top: 0.5rem;
+}
+
+.product-card p {
+  margin: 0.5rem 0;
+}

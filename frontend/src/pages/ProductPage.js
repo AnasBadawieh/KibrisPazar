@@ -1,18 +1,30 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { listProductDetails } from '../redux/actions/productActions';
+import './ProductPage.css'; // Import the CSS file for custom styling
 
-const ProductPage = ({ match }) => {
+const ProductPage = () => {
+  const { id } = useParams();
   const dispatch = useDispatch();
 
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
 
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
   useEffect(() => {
-    dispatch(listProductDetails(match.params.id));
-  }, [dispatch, match]);
+    dispatch(listProductDetails(id));
+  }, [dispatch, id]);
+
+  const handleImageClick = (index) => {
+    setSelectedImageIndex(index);
+  };
+
+  const imageUrl = product && product.images && product.images.length > 0 
+    ? `${process.env.REACT_APP_API_BASE_URL}${product.images[selectedImageIndex]}` 
+    : '';
 
   return (
     <>
@@ -24,34 +36,32 @@ const ProductPage = ({ match }) => {
       ) : error ? (
         <h3>{error}</h3>
       ) : (
-        <Row>
-          <Col md={6}>
-            <Image src={product.image} alt={product.name} fluid />
-          </Col>
-          <Col md={3}>
-            <ListGroup variant="flush">
-              <ListGroup.Item>
-                <h3>{product.name}</h3>
-              </ListGroup.Item>
-              <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
-              <ListGroup.Item>Description: {product.description}</ListGroup.Item>
-              <ListGroup.Item>Seller: {product.seller.name}</ListGroup.Item>
-              <ListGroup.Item>Seller Rating: {product.seller.rating}</ListGroup.Item>
-              <ListGroup.Item>Product Rating: {product.rating}</ListGroup.Item>
-            </ListGroup>
-          </Col>
-          <Col md={3}>
-            <Card>
-              <ListGroup variant="flush">
-                <ListGroup.Item>
-                  <Button className="btn-block" type="button">
-                    Add to Cart
-                  </Button>
-                </ListGroup.Item>
-              </ListGroup>
-            </Card>
-          </Col>
-        </Row>
+        <div className="product-details-container">
+          <div className="parent-container">
+            <Image src={imageUrl} alt={product.name} fluid className="main-image" />
+            <div className="thumbnail-container">
+              {product.images && product.images.map((img, index) => (
+                <Image
+                  key={index}
+                  src={`${process.env.REACT_APP_API_BASE_URL}${img}`}
+                  alt={product.name}
+                  fluid
+                  onClick={() => handleImageClick(index)}
+                  className={`img-thumbnail ${selectedImageIndex === index ? 'selected-thumbnail' : ''}`}
+                  style={{ cursor: 'pointer' }}
+                />
+              ))}
+            </div>
+          </div>
+          <div className="product-details">
+            <h3>{product.name}</h3>
+            <p>Price: ${product.price}</p>
+            <p>Description: {product.description}</p>
+            <button className="add-to-cart-button">
+              Add to Cart
+            </button>
+          </div>
+        </div>
       )}
     </>
   );

@@ -1,107 +1,156 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
+import { Button, Image, Row, Col, Spinner } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { createProduct } from '../redux/actions/productActions';
 import './SellerDashboardPage.css';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const SellerDashboardPage = () => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState(0);
   const [countInStock, setCountInStock] = useState(0);
-  const [image, setImage] = useState('');
+  const [images, setImages] = useState([]);
   const [description, setDescription] = useState('');
   const [uploading, setUploading] = useState(false);
+  const [previewImages, setPreviewImages] = useState([]);
+  const fileInputRef = useRef(null);
 
   const dispatch = useDispatch();
   const productCreate = useSelector((state) => state.productCreate || {});
   const { loading, success, error } = productCreate;
 
-  const uploadFileHandler = async (e) => {
-    const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append('image', file);
+  const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:5000';
+
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    setImages(prevImages => [...prevImages, ...files]);
+
+    const previewFiles = files.map(file => URL.createObjectURL(file));
+    setPreviewImages(prevPreviewImages => [...prevPreviewImages, ...previewFiles]);
+
+    // Reset the input field value
+    e.target.value = null;
+  };
+
+  const handleImageDelete = (index) => {
+    setImages(images.filter((_, i) => i !== index));
+    setPreviewImages(previewImages.filter((_, i) => i !== index));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setUploading(true);
 
+    const formData = new FormData();
+    images.forEach(image => formData.append('images', image));
+
     try {
-      const config = {
+      const { data } = await axios.post(`${BASE_URL}/api/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-      };
+      });
 
-      const { data } = await axios.post('/api/upload', formData, config);
+      if (data.length === 0) {
+        alert('Failed to upload images');
+        setUploading(false);
+        return;
+      }
 
-      setImage(data);
+      dispatch(createProduct({
+        name,
+        price,
+        description,
+        countInStock,
+        images: data // Use the directories returned from the upload API
+      }));
+
       setUploading(false);
     } catch (error) {
-      console.error(error);
+      console.error('Failed to upload images', error);
       setUploading(false);
-    }
-  };
-
-  const submitHandler = (e) => {
-    e.preventDefault();
-    if (image) {
-      dispatch(createProduct({ name, price, countInStock, image, description }));
-    } else {
-      alert('Please upload an image');
     }
   };
 
   return (
-    <div>
-      <h1>Seller Dashboard</h1>
-      {loading && <div>Loading...</div>}
-      {success && <div>Product created successfully</div>}
-      {error && <div>{error}</div>}
-      <form onSubmit={submitHandler}>
+    <div className="container mt-4">
+      <h2>Seller Dashboard</h2>
+      <form onSubmit={handleSubmit}>
         <div>
-          <label>Name</label>
+          <label htmlFor="name">Name</label>
           <input
             type="text"
-            placeholder="Enter product name"
+            id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
         </div>
         <div>
-          <label>Description</label>
-          <textarea
-            placeholder="Enter product description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          ></textarea>
-        </div>
-        <div>
-          <label>Price</label>
+          <label htmlFor="price">Price</label>
           <input
             type="number"
-            placeholder="Enter product price"
+            id="price"
             value={price}
-            onChange={(e) => setPrice(Number(e.target.value))}
+            onChange={(e) => setPrice(e.target.value)}
           />
         </div>
         <div>
-          <label>Count In Stock</label>
+          <label htmlFor="countInStock">Count In Stock</label>
           <input
             type="number"
-            placeholder="Enter count in stock"
+            id="countInStock"
             value={countInStock}
-            onChange={(e) => setCountInStock(Number(e.target.value))}
+            onChange={(e) => setCountInStock(e.target.value)}
           />
         </div>
         <div>
-          <label>Image</label>
+          <label htmlFor="image">Image</label>
           <input
             type="file"
             id="image-file"
             label="Choose File"
-            onChange={uploadFileHandler}
+            onChange={handleImageChange}
+            multiple
+            accept="image/*"
+            className="form-control"
+            ref={fileInputRef}
           />
-          {uploading && <div>Uploading...</div>}
+          {uploading && <Spinner animation="border" />}
         </div>
-        <button type="submit">Create Product</button>
+        <div>
+          <label htmlFor="description">Description</label>
+          <textarea
+            id="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Creating...' : 'Create Product'}
+        </button>
       </form>
+      <Row className="mt-3">
+        {previewImages.map((src, index) => (
+          <Col key={index} xs={12} sm={6} md={4} lg={3} className="mb-3">
+            <div className="position-relative">
+              <Image src={src} alt={`Upload ${index + 1}`} fluid />
+              <Button
+                variant="danger"
+                size="sm"
+                className="position-absolute top-0 end-0 m-2"
+                onClick={() => handleImageDelete(index)}
+              >
+                ×
+              </Button>
+            </div>
+          </Col>
+        ))}
+      </Row>
+      {loading && <div>Loading...</div>}
+      {error && <div>{error}</div>}
+      {success && <div>Product Created Successfully</div>}
     </div>
   );
 };

@@ -1,11 +1,15 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
+const { deleteImage } = require('../controllers/uploadController');
+const { createProduct } = require('../controllers/productController');
+const { protect } = require('../middlewares/authMiddleware');
+
 const router = express.Router();
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, 'uploads/');
+    cb(null, path.join(__dirname, '../../uploads'));
   },
   filename(req, file, cb) {
     cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`);
@@ -31,8 +35,11 @@ const upload = multer({
   },
 });
 
-router.post('/', upload.single('image'), (req, res) => {
-  res.send(`/${req.file.path}`);
+router.post('/', upload.array('images', 10), (req, res) => {
+  res.send(req.files.map(file => `/uploads/${file.filename}`));
 });
+
+router.delete('/:filename', deleteImage);
+router.route('/').post(protect, createProduct);
 
 module.exports = router;

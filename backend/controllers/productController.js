@@ -1,37 +1,48 @@
+const asyncHandler = require('express-async-handler');
 const Product = require('../models/productModel');
 
-// Get all products
-const getProducts = async (req, res) => {
+// @desc    Fetch all products
+// @route   GET /api/products
+// @access  Public
+const getProducts = asyncHandler(async (req, res) => {
   const products = await Product.find({});
   res.json(products);
-};
+});
 
-// Get single product by ID
-const getProductById = async (req, res) => {
+// @desc    Fetch single product
+// @route   GET /api/products/:id
+// @access  Public
+const getProductById = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);
-
   if (product) {
     res.json(product);
   } else {
-    res.status(404).json({ message: 'Product not found' });
+    res.status(404);
+    throw new Error('Product not found');
   }
-};
+});
 
-// Create new product
-const createProduct = async (req, res) => {
-  const { name, description, price, countInStock, image } = req.body;
+// @desc    Create a product
+// @route   POST /api/products
+// @access  Private
+const createProduct = asyncHandler(async (req, res) => {
+  const { name, price, description, images, countInStock } = req.body;
 
   const product = new Product({
     name,
-    description,
     price,
+    description,
+    images,
     countInStock,
-    image,
     seller: req.user._id,
   });
 
   const createdProduct = await product.save();
   res.status(201).json(createdProduct);
-};
+});
 
-module.exports = { getProducts, getProductById, createProduct };
+module.exports = {
+  getProducts,
+  getProductById,
+  createProduct,
+};

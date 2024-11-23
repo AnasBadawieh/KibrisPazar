@@ -1,0 +1,79 @@
+/* Ensure the parent container stacks elements vertically */
+.parent-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center the items horizontally */
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  max-width: 600px;
+  height: 700px; /* Fixed height for the image preview container */
+  justify-content: center;
+  overflow: hidden;
+  margin-left: 100px;
+  margin-right: 20px; /* Add some space to the right */
+}
+
+.main-image {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain; /* Ensure the image fits within the container */
+  margin-bottom: 10px;
+}
+
+.thumbnail-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap; /* Allow thumbnails to wrap to the next line if needed */
+  margin-top: 10px; /* Add some space between the main image and thumbnails */
+}
+
+.img-thumbnail {
+  width: 60px; /* Fixed width for the image thumbnails */
+  height: 60px; /* Fixed height for the image thumbnails */
+  object-fit: contain; /* Ensure the thumbnail fits within the container */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.selected-thumbnail {
+  border: 2px solid #007bff; /* Highlight the selected thumbnail */
+}
+
+/* Styling for the product details container */
+.product-details-container {
+  display: flex;
+  flex-direction: row; /* Place the parent-container and product-details side by side */
+  align-items: flex-start;
+  margin-top: 20px;
+  justify-content: space-between; /* Ensure the containers are spaced apart */
+}
+
+.product-details {
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  margin-left: auto; /* Push the product details to the far right */
+  margin-right: 100px; /* Add some space to the right */
+}
+
+.add-to-cart-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.add-to-cart-button:hover {
+  background-color: #0056b3;
+}
