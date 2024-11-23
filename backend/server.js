@@ -17,6 +17,7 @@ const paymentRoutes = require('./routes/paymentRoutes');
 const sellerRoutes = require('./routes/sellerRoutes');
 const messageRoutes = require('./routes/messageRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
+const cartRoutes = require('./routes/cartRoutes');
 const connectDB = require('./config/db');
 
 const app = express();
@@ -36,6 +37,8 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api/sellers', sellerRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/cart', cartRoutes);
+
 
 // Serve uploaded files statically
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));

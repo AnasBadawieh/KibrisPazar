@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { listProductDetails } from '../redux/actions/productActions';
+import { addToCart } from '../redux/actions/cartActions';
 import './ProductPage.css'; // Import the CSS file for custom styling
 
 const ProductPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
 
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [qty, setQty] = useState(1);
 
   useEffect(() => {
     dispatch(listProductDetails(id));
@@ -20,6 +23,11 @@ const ProductPage = () => {
 
   const handleImageClick = (index) => {
     setSelectedImageIndex(index);
+  };
+
+  const addToCartHandler = () => {
+    dispatch(addToCart(product._id, qty));
+    navigate('/cart');
   };
 
   const imageUrl = product && product.images && product.images.length > 0 
@@ -57,9 +65,18 @@ const ProductPage = () => {
             <h3>{product.name}</h3>
             <p>Price: ${product.price}</p>
             <p>Description: {product.description}</p>
-            <button className="add-to-cart-button">
+            <select value={qty} onChange={(e) => setQty(e.target.value)}>
+              {[...Array(product.countInStock).keys()].map((x) => (
+                <option key={x + 1} value={x + 1}>
+                  {x + 1}
+                </option>
+              ))}
+            </select>
+
+            <button className="add-to-cart-button" onClick={addToCartHandler} disabled={product.countInStock === 0}>
               Add to Cart
             </button>
+
           </div>
         </div>
       )}
