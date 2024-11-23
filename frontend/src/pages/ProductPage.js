@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 import { listProductDetails } from '../redux/actions/productActions';
+import './ProductPage.css'; // Import the CSS file for custom styling
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -35,45 +36,32 @@ const ProductPage = () => {
       ) : error ? (
         <h3>{error}</h3>
       ) : (
-        <Row>
-          <Col md={6}>
-            <Image src={imageUrl} alt={product.name} fluid />
-            <Row className="mt-3">
+        <div className="product-details-container">
+          <div className="parent-container">
+            <Image src={imageUrl} alt={product.name} fluid className="main-image" />
+            <div className="thumbnail-container">
               {product.images && product.images.map((img, index) => (
-                <Col key={index} xs={3} md={2}>
-                  <Image
-                    src={`${process.env.REACT_APP_API_BASE_URL}${img}`}
-                    alt={product.name}
-                    fluid
-                    onClick={() => handleImageClick(index)}
-                    className="img-thumbnail"
-                    style={{ cursor: 'pointer' }}
-                  />
-                </Col>
+                <Image
+                  key={index}
+                  src={`${process.env.REACT_APP_API_BASE_URL}${img}`}
+                  alt={product.name}
+                  fluid
+                  onClick={() => handleImageClick(index)}
+                  className={`img-thumbnail ${selectedImageIndex === index ? 'selected-thumbnail' : ''}`}
+                  style={{ cursor: 'pointer' }}
+                />
               ))}
-            </Row>
-          </Col>
-          <Col md={3}>
-            <ListGroup variant="flush">
-              <ListGroup.Item>
-                <h3>{product.name}</h3>
-              </ListGroup.Item>
-              <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
-              <ListGroup.Item>Description: {product.description}</ListGroup.Item>
-            </ListGroup>
-          </Col>
-          <Col md={3}>
-            <Card>
-              <ListGroup variant="flush">
-                <ListGroup.Item>
-                  <Button className="btn-block" type="button">
-                    Add to Cart
-                  </Button>
-                </ListGroup.Item>
-              </ListGroup>
-            </Card>
-          </Col>
-        </Row>
+            </div>
+          </div>
+          <div className="product-details">
+            <h3>{product.name}</h3>
+            <p>Price: ${product.price}</p>
+            <p>Description: {product.description}</p>
+            <button className="add-to-cart-button">
+              Add to Cart
+            </button>
+          </div>
+        </div>
       )}
     </>
   );
