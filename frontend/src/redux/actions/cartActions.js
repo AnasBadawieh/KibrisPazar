@@ -44,16 +44,28 @@ export const addToCart = (productId, qty) => async (dispatch, getState) => {
 };
 
 export const removeFromCart = (id) => async (dispatch, getState) => {
-  dispatch({
-    type: CART_REMOVE_ITEM,
-    payload: id
-  });
+  try {
+    const {
+      userLogin: { userInfo },
+    } = getState();
 
-  const { cart: { cartItems } } = getState();
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
 
-  await axios.post(`${API_BASE_URL}/api/cart`, { cartItems });
+    await axios.delete(`${API_BASE_URL}/api/cart/${id}`, config);
 
-  localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    dispatch({
+      type: CART_REMOVE_ITEM,
+      payload: id,
+    });
+
+    localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems));
+  } catch (error) {
+    console.error('Error removing item from cart:', error);
+  }
 };
 
 export const saveShippingAddress = (data) => (dispatch) => {
