@@ -7,6 +7,8 @@ import './LoginPage.css'; // Import the CSS file
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [saveLoginInfo, setSaveLoginInfo] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -20,8 +22,27 @@ const LoginPage = () => {
     }
   }, [navigate, userInfo]);
 
+  useEffect(() => {
+    // Retrieve saved login info from localStorage
+    const savedEmail = localStorage.getItem('savedEmail');
+    const savedPassword = localStorage.getItem('savedPassword');
+    if (savedEmail && savedPassword) {
+      setEmail(savedEmail);
+      setPassword(savedPassword);
+      setSaveLoginInfo(true);
+    }
+  }, []);
+
   const submitHandler = (e) => {
     e.preventDefault();
+    // Save login info to localStorage if checkbox is checked
+    if (saveLoginInfo) {
+      localStorage.setItem('savedEmail', email);
+      localStorage.setItem('savedPassword', password);
+    } else {
+      localStorage.removeItem('savedEmail');
+      localStorage.removeItem('savedPassword');
+    }
     dispatch(login(email, password));
   };
 
@@ -43,11 +64,27 @@ const LoginPage = () => {
         <div>
           <label>Password</label>
           <input
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             placeholder="Enter password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            checked={showPassword}
+            onChange={() => setShowPassword(!showPassword)}
+          />
+          <label>Show Password</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            checked={saveLoginInfo}
+            onChange={() => setSaveLoginInfo(!saveLoginInfo)}
+          />
+          <label>Save Login Info</label>
         </div>
         <button type="submit">Sign In</button>
       </form>

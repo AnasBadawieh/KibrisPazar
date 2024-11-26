@@ -10,6 +10,8 @@ const RegisterPage = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -62,7 +64,7 @@ const RegisterPage = () => {
         <div>
           <label>Password</label>
           <input
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             placeholder="Enter password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -76,6 +78,14 @@ const RegisterPage = () => {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            checked={showPassword}
+            onChange={() => setShowPassword(!showPassword)}
+          />
+          <label>Show Password</label>
         </div>
         <button type="submit">Register</button>
       </form>
