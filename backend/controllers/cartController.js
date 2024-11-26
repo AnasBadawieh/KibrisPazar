@@ -79,7 +79,30 @@ const removeFromCart = asyncHandler(async (req, res) => {
   }
 });
 
+const updateCartItem = asyncHandler(async (req, res) => {
+  const { qty } = req.body;
+  const cart = await Cart.findOne({ user: req.user._id });
+
+  if (cart) {
+    const cartItem = cart.cartItems.find((item) => item.product.toString() === req.params.id);
+
+    if (cartItem) {
+      cartItem.qty = qty;
+      await cart.save();
+      res.json(cartItem);
+    } else {
+      res.status(404);
+      throw new Error('Cart item not found');
+    }
+  } else {
+    res.status(404);
+    throw new Error('Cart not found');
+  }
+});
+
+
 module.exports = {
+  updateCartItem,
   addToCart,
   removeFromCart,
   getCart,

@@ -4,6 +4,7 @@ import {
   CART_REMOVE_ITEM,
   CART_SAVE_SHIPPING_ADDRESS,
   CART_SAVE_PAYMENT_METHOD,
+  CART_UPDATE_ITEM,
 } from '../constants/cartConstants';
 import API_BASE_URL from '../../config';
 
@@ -55,7 +56,7 @@ export const removeFromCart = (id) => async (dispatch, getState) => {
       },
     };
 
-    await axios.delete(`${API_BASE_URL}/api/cart/${id}`, config);
+    await axios.delete(`${API_BASE_URL}/api/cart/remove/${id}`, config);
 
     dispatch({
       type: CART_REMOVE_ITEM,
@@ -84,4 +85,37 @@ export const savePaymentMethod = (data) => (dispatch) => {
   });
 
   localStorage.setItem('paymentMethod', JSON.stringify(data));
+};
+
+export const updateCartItem = (productId, qty) => async (dispatch, getState) => {
+  try {
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(`${API_BASE_URL}/api/cart/update/${productId}`, { qty }, config);
+
+    dispatch({
+      type: CART_UPDATE_ITEM,
+      payload: {
+        product: data.product,
+        name: data.name,
+        image: data.image,
+        price: data.price,
+        countInStock: data.countInStock,
+        qty: data.qty,
+      },
+    });
+
+    localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems));
+  } catch (error) {
+    console.error('Error updating cart item:', error);
+  }
 };
