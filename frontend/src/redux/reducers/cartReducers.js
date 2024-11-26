@@ -41,9 +41,7 @@ export const cartReducer = (state = { cartItems: [], shippingAddress: {} }, acti
     case CART_UPDATE_ITEM:
       return {
         ...state,
-        cartItems: state.cartItems.map((item) =>
-          item.product === action.payload.product ? action.payload : item
-        ),
+        cartItems: action.payload,
       };
     default:
       return state;

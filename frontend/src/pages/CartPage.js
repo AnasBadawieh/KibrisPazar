@@ -42,8 +42,6 @@ const CartPage = () => {
 
   const totalPrice = cartItems.reduce((acc, item) => acc + Number(item.price) * Number(item.qty), 0);
 
-  console.log('Cart items in CartPage:', cartItems);
-
   return (
     <div className="cart-page">
       <h2>Shopping Cart</h2>

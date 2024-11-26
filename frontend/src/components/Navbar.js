@@ -13,8 +13,6 @@ const Header = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  console.log('Full userInfo:', userInfo); // Add this debug line
-
   const logoutHandler = () => {
     dispatch(logout());
     navigate('/'); // Redirect to homepage
@@ -43,7 +41,6 @@ const Header = () => {
           </LinkContainer>
         );
       default:
-        console.log('Unknown role:', role);
         return null;
     }
   };

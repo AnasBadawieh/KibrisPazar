@@ -22,26 +22,18 @@ const addToCart = asyncHandler(async (req, res) => {
   const { cartItems } = req.body;
   const user = req.user._id;
 
-  console.log('Received cart items:', cartItems);
-  console.log('User ID:', user);
-
   // Filter out invalid items
   const validCartItems = cartItems.filter(item => 
     item.product && item.price && item.image && item.qty && item.name
   );
-
-  console.log('Valid cart items:', validCartItems);
-
   try {
     let cart = await Cart.findOne({ user });
 
     if (cart) {
       // Update existing cart
-      console.log('Updating existing cart');
       cart.cartItems = validCartItems;
     } else {
       // Create new cart
-      console.log('Creating new cart');
       cart = new Cart({
         user,
         cartItems: validCartItems
@@ -55,10 +47,8 @@ const addToCart = asyncHandler(async (req, res) => {
     }
 
     await cart.save();
-    console.log('Cart saved:', cart);
     res.status(201).json({ message: 'Cart updated', cart });
   } catch (error) {
-    console.error('Error saving cart:', error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });

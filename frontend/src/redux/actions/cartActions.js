@@ -11,8 +11,6 @@ import API_BASE_URL from '../../config';
 export const addToCart = (productId, qty) => async (dispatch, getState) => {
   try {
     const { data } = await axios.get(`${API_BASE_URL}/api/products/${productId}`);
-    console.log('Product data:', data);
-
     dispatch({
       type: CART_ADD_ITEM,
       payload: {
@@ -26,7 +24,6 @@ export const addToCart = (productId, qty) => async (dispatch, getState) => {
     });
 
     const { cart: { cartItems }, userLogin: { userInfo } } = getState();
-    console.log('Cart items:', cartItems);
 
     const config = {
       headers: {
@@ -36,8 +33,6 @@ export const addToCart = (productId, qty) => async (dispatch, getState) => {
     };
 
     await axios.post(`${API_BASE_URL}/api/cart`, { cartItems }, config);
-    console.log('Cart items posted to server');
-
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
   } catch (error) {
     console.error('Error adding to cart:', error);
@@ -87,35 +82,17 @@ export const savePaymentMethod = (data) => (dispatch) => {
   localStorage.setItem('paymentMethod', JSON.stringify(data));
 };
 
-export const updateCartItem = (productId, qty) => async (dispatch, getState) => {
-  try {
-    const {
-      userLogin: { userInfo },
-    } = getState();
+export const updateCartItem = (productId, qty) => (dispatch, getState) => {
+  const { cart: { cartItems } } = getState();
 
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
+  const updatedCartItems = cartItems.map(item =>
+    item.product === productId ? { ...item, qty } : item
+  );
 
-    const { data } = await axios.put(`${API_BASE_URL}/api/cart/update/${productId}`, { qty }, config);
+  dispatch({
+    type: CART_UPDATE_ITEM,
+    payload: updatedCartItems,
+  });
 
-    dispatch({
-      type: CART_UPDATE_ITEM,
-      payload: {
-        product: data.product,
-        name: data.name,
-        image: data.image,
-        price: data.price,
-        countInStock: data.countInStock,
-        qty: data.qty,
-      },
-    });
-
-    localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems));
-  } catch (error) {
-    console.error('Error updating cart item:', error);
-  }
+  localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
 };
