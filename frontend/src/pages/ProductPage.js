@@ -65,7 +65,7 @@ const ProductPage = () => {
             <h3>{product.name}</h3>
             <p>Price: ${product.price}</p>
             <p>Description: {product.description}</p>
-            <select value={qty} onChange={(e) => setQty(e.target.value)}>
+            <select value={qty} onChange={(e) => setQty(e.target.value)} disabled={product.countInStock === 0}>
               {[...Array(product.countInStock).keys()].map((x) => (
                 <option key={x + 1} value={x + 1}>
                   {x + 1}
@@ -73,8 +73,12 @@ const ProductPage = () => {
               ))}
             </select>
 
-            <button className="add-to-cart-button" onClick={addToCartHandler} disabled={product.countInStock === 0}>
-              Add to Cart
+            <button 
+              className="add-to-cart-button" 
+              onClick={addToCartHandler} 
+              disabled={product.countInStock === 0}
+            >
+              {product.countInStock === 0 ? 'Out of Stock' : 'Add to Cart'}
             </button>
 
           </div>
