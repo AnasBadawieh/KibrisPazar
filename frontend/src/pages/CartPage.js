@@ -24,7 +24,16 @@ const CartPage = () => {
   }, [dispatch, productId, qty]);
 
   const removeFromCartHandler = (id) => {
+    // Remove from database
     dispatch(removeFromCart(id));
+    // Remove from local storage
+    const updatedCartItems = cartItems.filter(item => item.product !== id);
+    localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+  };
+
+  const clearLocalStorageCart = () => {
+    localStorage.removeItem('cartItems');
+    window.location.reload(); // Reload the page to reflect changes
   };
 
   const checkoutHandler = () => {
@@ -46,8 +55,9 @@ const CartPage = () => {
             </div>
           ) : (
             <div>
+              <button onClick={clearLocalStorageCart}>Clear Cart from Local Storage</button>
               {cartItems.map((item) => (
-                <CartItem key={item.product} item={item} />
+                <CartItem key={item.product} item={item} removeFromCartHandler={removeFromCartHandler} />
               ))}
               <div>
                 <h2>Total: ${totalPrice.toFixed(2)}</h2>
