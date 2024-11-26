@@ -3,9 +3,12 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/actions/userActions';
+import { useNavigate } from 'react-router-dom';
+
 
 const Header = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -14,6 +17,8 @@ const Header = () => {
 
   const logoutHandler = () => {
     dispatch(logout());
+    navigate('/'); // Redirect to homepage
+    window.location.reload(); // Force page reload
   };
 
   const renderDashboardLink = () => {

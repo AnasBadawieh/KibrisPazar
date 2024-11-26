@@ -66,3 +66,12 @@ export const userUpdateProfileReducer = (state = {}, action) => {
       return state;
   }
 };
+
+export const userLogoutReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_LOGOUT:
+      return {};
+    default:
+      return state;
+  }
+};
