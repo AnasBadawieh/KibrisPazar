@@ -17,6 +17,9 @@ const CartPage = () => {
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   useEffect(() => {
     if (productId) {
       dispatch(addToCart(productId, qty));
@@ -47,26 +50,31 @@ const CartPage = () => {
       <h2>Shopping Cart</h2>
       <div className="cart-container">
         <div className="cart-items">
-          {cartItems.length === 0 ? (
-            <div>
-              Your cart is empty <Link to="/">Go Back</Link>
-            </div>
-          ) : (
-            <div>
-              <button onClick={clearLocalStorageCart}>Clear Cart from Local Storage</button>
-              {cartItems.map((item) => (
-                <CartItem key={item.product} item={item} removeFromCartHandler={removeFromCartHandler} />
-              ))}
+            {userInfo ? (
+              cartItems.length === 0 ? (
+                <div>
+                  Your cart is empty <Link to="/">Go Back</Link>
+                </div>
+              ) : (
+                <div>
+                  <button onClick={clearLocalStorageCart}>Clear Cart from Local Storage</button>
+                  {cartItems.map((item) => (
+                    <CartItem key={item.product} item={item} removeFromCartHandler={removeFromCartHandler} />
+                  ))}
+                  <div>
+                    <h2>Total: ${totalPrice.toFixed(2)}</h2>
+                    <button onClick={checkoutHandler} disabled={cartItems.length === 0}>Proceed to Checkout</button>
+                  </div>
+                </div>
+              )
+              ) : (
               <div>
-                <h2>Total: ${totalPrice.toFixed(2)}</h2>
-                <button onClick={checkoutHandler} disabled={cartItems.length === 0}>Proceed to Checkout</button>
+                <Link to="/login">Login</Link> to add items to Cart
               </div>
-            </div>
-          )}
+            )}
         </div>
       </div>
     </div>
   );
 };
-
 export default CartPage;
