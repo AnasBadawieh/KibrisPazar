@@ -14,6 +14,9 @@ const ProductPage = () => {
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [qty, setQty] = useState(1);
 
@@ -26,8 +29,12 @@ const ProductPage = () => {
   };
 
   const addToCartHandler = () => {
-    dispatch(addToCart(product._id, qty));
-    navigate('/cart');
+    if (!userInfo) {
+      navigate('/login');
+    } else {
+      dispatch(addToCart(product._id, qty));
+      navigate('/cart');
+    }
   };
 
   const imageUrl = product && product.images && product.images.length > 0 
@@ -63,24 +70,18 @@ const ProductPage = () => {
           </div>
           <div className="product-details">
             <h3>{product.name}</h3>
-            <p>Price: ${product.price}</p>
-            <p>Description: {product.description}</p>
-            <select value={qty} onChange={(e) => setQty(e.target.value)} disabled={product.countInStock === 0}>
+            <p>{product.description}</p>
+            <p>${product.price}</p>
+            <select value={qty} onChange={(e) => setQty(Number(e.target.value))}>
               {[...Array(product.countInStock).keys()].map((x) => (
                 <option key={x + 1} value={x + 1}>
                   {x + 1}
                 </option>
               ))}
             </select>
-
-            <button 
-              className="add-to-cart-button" 
-              onClick={addToCartHandler} 
-              disabled={product.countInStock === 0}
-            >
-              {product.countInStock === 0 ? 'Out of Stock' : 'Add to Cart'}
+            <button onClick={addToCartHandler} disabled={product.countInStock === 0} className="add-to-cart-button">
+              {product.countInStock === 0 ? 'Out of Stock' : userInfo ? 'Add to Cart' : <Link to="/login">Login to Add to Cart</Link>}
             </button>
-
           </div>
         </div>
       )}
