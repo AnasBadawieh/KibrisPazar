@@ -79,8 +79,18 @@ const ProductPage = () => {
                 </option>
               ))}
             </select>
-            <button onClick={addToCartHandler} disabled={product.countInStock === 0} className="add-to-cart-button">
-              {product.countInStock === 0 ? 'Out of Stock' : userInfo ? 'Add to Cart' : <Link to="/login">Login to Add to Cart</Link>}
+            <button 
+              onClick={() => {
+                if (!userInfo) {
+                  navigate('/login');
+                } else {
+                  addToCartHandler();
+                }
+              }} 
+              disabled={product.countInStock === 0} 
+              className="add-to-cart-button"
+            >
+              {product.countInStock === 0 ? 'Out of Stock' : userInfo ? 'Add to Cart' : 'Login to Add to Cart'}
             </button>
           </div>
         </div>
