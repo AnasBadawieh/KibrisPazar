@@ -1,23 +1,16 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const { deleteImage } = require('../controllers/uploadController');
-const { createProduct } = require('../controllers/productController');
+const sharp = require('sharp');
+const { deleteImage, createProduct } = require('../controllers/uploadController');
 const { protect } = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
-const storage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, path.join(__dirname, '../../uploads'));
-  },
-  filename(req, file, cb) {
-    cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`);
-  },
-});
+const storage = multer.memoryStorage(); // Use memory storage to process the file in memory
 
 function checkFileType(file, cb) {
-  const filetypes = /jpg|jpeg|png/;
+  const filetypes = /jpg|jpeg|png|gif|bmp|tiff|tif|webp|avif|heic|heif|/; // Add more file types as needed
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
   const mimetype = filetypes.test(file.mimetype);
 
@@ -35,11 +28,26 @@ const upload = multer({
   },
 });
 
-router.post('/', upload.array('images', 10), (req, res) => {
-  res.send(req.files.map(file => `/uploads/${file.filename}`));
+router.post('/', upload.array('images', 10), async (req, res) => {
+  try {
+    const uploadPromises = req.files.map(async (file) => {
+      const filename = `${file.fieldname}-${Date.now()}.jpg`;
+      const outputPath = path.join(__dirname, '../../uploads', filename);
+
+      await sharp(file.buffer)
+        .jpeg({ quality: 90 })
+        .toFile(outputPath);
+
+      return `/uploads/${filename}`;
+    });
+
+    const uploadedFiles = await Promise.all(uploadPromises);
+    res.send(uploadedFiles);
+  } catch (error) {
+    res.status(500).send({ message: 'Failed to upload images', error });
+  }
 });
 
 router.delete('/:filename', deleteImage);
-router.route('/').post(protect, createProduct);
 
 module.exports = router;
