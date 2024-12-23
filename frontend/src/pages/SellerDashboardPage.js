@@ -75,10 +75,10 @@ const SellerDashboardPage = () => {
   };
 
   return (
-    <div className="container mt-4">
+    <div className="seller-dashboard-container">
       <h2>Seller Dashboard</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
+      <form onSubmit={handleSubmit} className="seller-dashboard-form">
+        <div className="form-group">
           <label htmlFor="name">Name</label>
           <input
             type="text"
@@ -87,7 +87,7 @@ const SellerDashboardPage = () => {
             onChange={(e) => setName(e.target.value)}
           />
         </div>
-        <div>
+        <div className="form-group">
           <label htmlFor="price">Price</label>
           <input
             type="number"
@@ -96,7 +96,7 @@ const SellerDashboardPage = () => {
             onChange={(e) => setPrice(e.target.value)}
           />
         </div>
-        <div>
+        <div className="form-group">
           <label htmlFor="countInStock">Count In Stock</label>
           <input
             type="number"
@@ -105,7 +105,7 @@ const SellerDashboardPage = () => {
             onChange={(e) => setCountInStock(e.target.value)}
           />
         </div>
-        <div>
+        <div className="form-group">
           <label htmlFor="image">Image</label>
           <input
             type="file"
@@ -119,7 +119,7 @@ const SellerDashboardPage = () => {
           />
           {uploading && <Spinner animation="border" />}
         </div>
-        <div>
+        <div className="form-group">
           <label htmlFor="description">Description</label>
           <textarea
             id="description"
@@ -127,7 +127,7 @@ const SellerDashboardPage = () => {
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
-        <button type="submit" disabled={loading}>
+        <button type="submit" className="btn-submit" disabled={loading}>
           {loading ? 'Creating...' : 'Create Product'}
         </button>
       </form>

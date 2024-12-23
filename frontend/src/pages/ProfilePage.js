@@ -50,11 +50,11 @@ const ProfilePage = ({ history }) => {
     <div>
       <div className="profile-container">
         <h1>User Profile</h1>
-        {message && <div>{message}</div>}
-        {error && <div>{error}</div>}
-        {loading && <div>Loading...</div>}
-        <form onSubmit={submitHandler}>
-          <div>
+        {message && <div className="message">{message}</div>}
+        {error && <div className="error">{error}</div>}
+        {loading && <div className="loading">Loading...</div>}
+        <form onSubmit={submitHandler} className="profile-form">
+          <div className="form-group">
             <label>Name</label>
             <input
               type="text"
@@ -63,7 +63,7 @@ const ProfilePage = ({ history }) => {
               onChange={(e) => setName(e.target.value)}
             />
           </div>
-          <div>
+          <div className="form-group">
             <label>Email Address</label>
             <input
               type="email"
@@ -72,7 +72,7 @@ const ProfilePage = ({ history }) => {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          <div>
+          <div className="form-group">
             <label>Password</label>
             <input
               type="password"
@@ -81,7 +81,7 @@ const ProfilePage = ({ history }) => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <div>
+          <div className="form-group">
             <label>Confirm Password</label>
             <input
               type="password"
@@ -90,8 +90,11 @@ const ProfilePage = ({ history }) => {
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </div>
-          <button type="submit">Update</button>
+          <button type="submit" className="btn-submit">
+            Update
+          </button>
         </form>
+        {success && <div className="success">Profile Updated Successfully</div>}
       </div>
     </div>
   );

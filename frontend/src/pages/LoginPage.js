@@ -49,10 +49,10 @@ const LoginPage = () => {
   return (
     <div className="login-container">
       <h1>Sign In</h1>
-      {error && <div>{error}</div>}
-      {loading && <div>Loading...</div>}
-      <form onSubmit={submitHandler}>
-        <div>
+      {error && <div className="error">{error}</div>}
+      {loading && <div className="loading">Loading...</div>}
+      <form onSubmit={submitHandler} className="login-form">
+        <div className="form-group">
           <label>Email Address</label>
           <input
             type="email"
@@ -61,7 +61,7 @@ const LoginPage = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>Password</label>
           <input
             type={showPassword ? 'text' : 'password'}
@@ -70,7 +70,7 @@ const LoginPage = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <div>
+        <div className="form-group-inline">
           <input
             type="checkbox"
             checked={showPassword}
@@ -78,7 +78,7 @@ const LoginPage = () => {
           />
           <label>Show Password</label>
         </div>
-        <div>
+        <div className="form-group-inline">
           <input
             type="checkbox"
             checked={saveLoginInfo}
@@ -86,7 +86,7 @@ const LoginPage = () => {
           />
           <label>Save Login Info</label>
         </div>
-        <button type="submit">Sign In</button>
+        <button type="submit" className="btn-submit">Sign In</button>
       </form>
       <div>
         New Customer? <Link to="/register">Register</Link>

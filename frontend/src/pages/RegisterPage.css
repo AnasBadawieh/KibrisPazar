@@ -1,44 +1,75 @@
 .register-container {
-  max-width: 400px;
-  margin: auto;
+  max-width: 600px;
+  margin: 0 auto;
   padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-}
-
-.register-container h1 {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
   text-align: center;
 }
 
-.register-container form {
+.register-form {
   display: flex;
   flex-direction: column;
 }
 
-.register-container form div {
-  margin-bottom: 10px;
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
 }
 
-.register-container form label {
+.form-group label {
+  display: block;
   margin-bottom: 5px;
+  font-weight: bold;
 }
 
-.register-container form input {
-  padding: 10px;
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="text"] {
+  width: 100%;
+  padding: 8px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 4px;
 }
 
-.register-container form button {
-  padding: 10px;
+.form-group-inline {
+  display: flex;
+  align-items: center;
+}
+
+.form-group-inline input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.btn-submit {
+  padding: 10px 15px;
   background-color: #007bff;
-  color: white;
+  color: #fff;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
 }
 
-.register-container form button:hover {
+.btn-submit:hover {
   background-color: #0056b3;
+}
+
+.message, .error, .loading {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.message {
+  color: #ff0000;
+}
+
+.error {
+  color: #ff0000;
+}
+
+.loading {
+  color: #0000ff;
 }

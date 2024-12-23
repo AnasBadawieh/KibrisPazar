@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { register } from '../redux/actions/userActions';
 import './RegisterPage.css'; // Import the CSS file
 
@@ -11,7 +11,6 @@ const RegisterPage = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
-
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -39,11 +38,11 @@ const RegisterPage = () => {
   return (
     <div className="register-container">
       <h1>Register</h1>
-      {message && <div>{message}</div>}
-      {error && <div>{error}</div>}
-      {loading && <div>Loading...</div>}
-      <form onSubmit={submitHandler}>
-        <div>
+      {message && <div className="message">{message}</div>}
+      {error && <div className="error">{error}</div>}
+      {loading && <div className="loading">Loading...</div>}
+      <form onSubmit={submitHandler} className="register-form">
+        <div className="form-group">
           <label>Name</label>
           <input
             type="text"
@@ -52,7 +51,7 @@ const RegisterPage = () => {
             onChange={(e) => setName(e.target.value)}
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>Email</label>
           <input
             type="email"
@@ -61,7 +60,7 @@ const RegisterPage = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>Password</label>
           <input
             type={showPassword ? 'text' : 'password'}
@@ -70,16 +69,16 @@ const RegisterPage = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>Confirm Password</label>
           <input
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             placeholder="Confirm password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </div>
-        <div>
+        <div className="form-group-inline">
           <input
             type="checkbox"
             checked={showPassword}
@@ -87,8 +86,11 @@ const RegisterPage = () => {
           />
           <label>Show Password</label>
         </div>
-        <button type="submit">Register</button>
+        <button type="submit" className="btn-submit">Register</button>
       </form>
+      <div>
+        Have an Account? <Link to="/login">Login</Link>
+      </div>
     </div>
   );
 };
