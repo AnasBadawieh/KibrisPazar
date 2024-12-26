@@ -82,17 +82,30 @@ export const savePaymentMethod = (data) => (dispatch) => {
   localStorage.setItem('paymentMethod', JSON.stringify(data));
 };
 
-export const updateCartItem = (productId, qty) => (dispatch, getState) => {
-  const { cart: { cartItems } } = getState();
+export const updateCartItem = (productId, qty) => async (dispatch, getState) => {
+  try {
+    const { cart: { cartItems }, userLogin: { userInfo } } = getState();
 
-  const updatedCartItems = cartItems.map(item =>
-    item.product === productId ? { ...item, qty } : item
-  );
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
 
-  dispatch({
-    type: CART_UPDATE_ITEM,
-    payload: updatedCartItems,
-  });
+    const { data } = await axios.put(`${API_BASE_URL}/api/cart/update/${productId}`, { qty }, config);
 
-  localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+    const updatedCartItems = cartItems.map(item =>
+      item.product === productId ? { ...item, qty: data.qty } : item
+    );
+
+    dispatch({
+      type: CART_UPDATE_ITEM,
+      payload: updatedCartItems,
+    });
+
+    localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+  } catch (error) {
+    console.error('Error updating cart item:', error);
+  }
 };
