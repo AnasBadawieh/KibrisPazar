@@ -1,113 +1,131 @@
+# KibrisPazar
 
-# eCommerce Platform
+KibrisPazar is an eCommerce platform built using the MERN stack (MongoDB, Express.js, React.js, Node.js) with Redux for state management. This platform enables buyers, sellers, and admins to interact with products and services seamlessly. It includes role-based access, live bidding, secure payments, and responsive design.
 
-An advanced **eCommerce platform** built with the **MERN stack** that facilitates buying, selling, bidding, and more. This platform includes separate functionalities for **buyers**, **sellers**, and **admins**, providing a seamless user experience.
+## Features
 
----
-
-## 🚀 Features
-
-### Buyers:
-- Browse products by category, price, or popularity.
-- Add items to **wishlist** for later purchase.
-- Participate in **auctions** to bid on products.
-- Purchase products securely using integrated payment gateways.
-- Leave **reviews and ratings** for purchased items.
-- Track orders and view order history.
-
-### Sellers:
-- List products with detailed descriptions, images, and pricing.
-- Manage **inventory** and update product availability.
-- View **sales analytics**, including revenue, best-selling products, and customer data.
-- Offer **discount coupons** to attract buyers.
-- Accept or reject bids on auctioned items.
-
-### Admins:
-- Approve or reject seller accounts and product listings.
-- Manage user roles (buyers, sellers, and admins).
-- Monitor orders and handle disputes.
-- Access **dashboard metrics** for platform activity.
-- Send **notifications** for platform updates or promotions.
-- Handle **banned accounts** and user management.
+- **User Authentication**: Secure login and registration for users.
+- **User Roles**: Distinct workflows and dashboards for buyers, sellers, and admins.
+- **Product and Inventory Management**: Add, edit, delete products and manage stock counts.
+- **Cart Operations**: Manage cart with options to add/remove items and adjust quantities.
+- **Real-Time Updates**: Features such as live bidding and notifications.
+- **Secure Payment Integration**: Payments processed securely using Stripe API.
+- **Responsive Design**: Fully optimized for desktop and mobile devices.
+- **Dynamic UI**: React.js-powered interface for smooth navigation and interaction.
+- **Role-Based Access Control**: Secure access to data based on user roles.
+- **API Communication**: RESTful API for seamless interaction between frontend and backend.
+- **Database Management**: MongoDB with collections for users, products, carts, etc.
+- **Error Handling**: Comprehensive error messages and validations for a better user experience.
 
 ---
 
-## 🛠️ Tech Stack
+## Installation and Setup
 
-- **Frontend**: React.js, Redux Toolkit, Material-UI/Tailwind CSS
-- **Backend**: Node.js, Express.js
-- **Database**: MongoDB
-- **Authentication**: OAuth, JWT, and 2FA
-- **Real-Time Bidding**: Socket.IO
-- **Payment Integration**: PayPal, Stripe
-- **Cloud Hosting**: AWS/GCP
-- **Security**: CSRF protection, XSS prevention, encrypted data storage.
-
----
-
-## 🔒 Security Features
-- **JWT Authentication**: Secure user sessions.
-- **Two-Factor Authentication (2FA)**: Additional layer of login security.
-- **OAuth**: Support for Google, Facebook, and other social logins.
-- **CSRF Protection**: Safeguard against cross-site request forgery attacks.
-- **Validation**: Input sanitization to prevent SQL injection and XSS attacks.
-
----
-
-## 📊 Analytics
-- **Admin Dashboard**: Insights into platform performance.
-- **Sales Analytics**: Visualize earnings, transactions, and trends.
-- **User Activity Logs**: Monitor user behavior for fraud detection.
-
----
-
-## 🧑‍💻 Installation
-
-### Prerequisites:
-- Node.js (v14+)
+### Prerequisites
+Ensure you have the following installed:
+- Node.js
+- npm or yarn
 - MongoDB
-- Git
 
-### Steps:
-1. Clone the repository:
+### Cloning the Repository
+```bash
+git clone https://github.com/yourusername/KibrisPazar.git
+cd KibrisPazar
+```
+
+### Setting Up Environment Variables
+Create a `.env` file in the root of both the backend and frontend directories with the following keys:
+
+#### Backend `.env` file
+```
+JWT_SECRET=your_jwt_secret_key
+MONGO_URI=your_mongodb_connection_string
+STRIPE_KEY=your_stripe_secret_key
+```
+
+#### Frontend `.env` file
+```
+REACT_APP_API_URL=http://localhost:5000
+```
+
+---
+
+## Running the Application
+
+### Backend
+1. Navigate to the `backend` directory:
    ```bash
-   git clone https://github.com/your-repo/ecommerce-platform.git
-   cd ecommerce-platform
+   cd backend
    ```
-
 2. Install dependencies:
    ```bash
    npm install
-   cd client
-   npm install
    ```
-
-3. Configure `.env` file:
-   - Add your MongoDB URI, API keys, and environment variables:
-     ```env
-     MONGO_URI=<your_mongo_uri>
-     JWT_SECRET=<your_jwt_secret>
-     STRIPE_API_KEY=<your_stripe_key>
-     ```
-
-4. Run the application:
+3. Start the backend server:
    ```bash
-   # Start backend server
-   npm run server
-
-   # Start frontend
-   cd client
    npm start
    ```
+   The backend server will run at `http://localhost:5000` by default.
 
-5. Access the platform:
-   - Open `http://localhost:3000` in your browser.
+### Frontend
+1. Navigate to the `frontend` directory:
+   ```bash
+   cd frontend
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the frontend server:
+   ```bash
+   npm start
+   ```
+   The frontend server will run at `http://localhost:3000` by default.
 
 ---
 
-## ✨ Future Enhancements
-- AI-based product recommendations.
-- Support for multiple languages and currencies.
-- Advanced order tracking with delivery timelines.
-- Machine Learning for fraud detection in bidding.
+## Folder Structure
+```
+KibrisPazar/
+├── backend/
+│   ├── controllers/
+│   ├── models/
+│   ├── routes/
+│   ├── server.js
+│   └── .env
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── redux/
+│   │   └── App.js
+│   └── .env
+├── README.md
+└── package.json
+```
 
+---
+
+## Technologies Used
+
+### Frontend
+- React.js
+- Redux.js
+- Bootstrap (for styling)
+
+### Backend
+- Node.js
+- Express.js
+- MongoDB
+
+### Additional Tools
+- Stripe API (payment integration)
+- JWT (JSON Web Tokens for authentication)
+
+---
+
+## Contact
+For questions or support, please contact:
+- **Name**: Anas Badawieh
+- **Email**: a.badawiah@gmail.com
+- **GitHub**: [AnasBadawieh](https://github.com/AnasBadawieh)
